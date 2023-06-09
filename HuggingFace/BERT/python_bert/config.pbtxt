@@ -4,26 +4,16 @@ max_batch_size: 8
 
 input [
   {
-    name: "input_ids"
-    data_type: TYPE_INT32
-    dims: [ -1 ]
-  },
-  {
-    name: "attention_mask"
-    data_type: TYPE_INT32
-    dims: [ -1 ]
-  },
-  {
-    name: "token_type_ids"
-    data_type: TYPE_INT32
-    dims: [ -1 ]
+    name: "input_text"
+    data_type: TYPE_STRING
+    dims: [1]
   }
 ]
 output [
   {
     name: "last_hidden_state"
     data_type: TYPE_FP32
-    dims: [ -1, 768 ]  // This dimension can be changed depending on the model, e.g., BERT base is 768, BERT large is 1024
+    dims: [512, 768]
   }
 ]
 

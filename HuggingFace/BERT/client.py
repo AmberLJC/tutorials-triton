@@ -13,11 +13,9 @@ def main(model_name):
     client = httpclient.InferenceServerClient(url="localhost:8000")
 
     # Inputs
-    text = "What is the fastest car in the world?"
+    input_text = "What is the fastest car in the world?"
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    text = tokenizer(text, return_tensors="pt")
-
-    inputs = tokenizer.encode_plus(text, return_tensors='np')
+    inputs = tokenizer.encode_plus(input_text, return_tensors='np')
 
     # Convert the input tensors into the format required by Triton.
     input_tensors = []
