@@ -2,20 +2,6 @@ name: "python_bert"
 backend: "python"
 max_batch_size: 8
 
-input [
-  {
-    name: "input_text"
-    data_type: TYPE_STRING
-    dims: [1]
-  }
-]
-output [
-  {
-    name: "last_hidden_state"
-    data_type: TYPE_FP32
-    dims: [512, 768]
-  }
-]
 
 instance_group [
   {

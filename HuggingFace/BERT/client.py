@@ -7,27 +7,26 @@ import tritonclient.http as httpclient
 import requests
 import argparse
 
-from transformers import BertTokenizer, BertModel
 
 def main(model_name):
     client = httpclient.InferenceServerClient(url="localhost:8000")
 
     # Inputs
-    input_text = "What is the fastest car in the world?"
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    inputs = tokenizer.encode_plus(input_text, return_tensors='np')
+    text = "What is the fastest car in the world?"
+    text_input = np.array([text.encode()], dtype=object).reshape(-1, 1)  # add dtype=object here
 
-    # Convert the input tensors into the format required by Triton.
-    input_tensors = []
-    for name, array in inputs.items():
-        input_tensors.append(httpclient.InferInput(name, array.shape, np_to_triton_dtype(array.dtype)))
-        input_tensors[-1].set_data_from_numpy(array)
 
+    # Set Inputs
+    input_tensors = [
+        httpclient.InferInput("input_text", text_input.shape, datatype="BYTES")
+    ]
+    input_tensors[0].set_data_from_numpy(text_input)
     # Set outputs
     outputs = [
         httpclient.InferRequestedOutput("last_hidden_state")
     ]
 
+    print(input_tensors)
     # Query
     query_response = client.infer(model_name=model_name,
                                   inputs=input_tensors,
